@@ -55,11 +55,11 @@ HH_INLINE void PaddedUpdate(const HH_U64 size, const char* remaining_bytes,
   const size_t remainder_mod4 = remaining_size & 3;
   if (remainder_mod4 != 0) {
     const char* final_bytes = remaining_bytes + remaining_size - remainder_mod4;
-    packet4 += static_cast<uint32_t>(final_bytes[0]);
-    const int idx1 = remainder_mod4 >> 1;
-    const int idx2 = remainder_mod4 - 1;
-    packet4 += static_cast<uint32_t>(final_bytes[idx1]) << 8;
-    packet4 += static_cast<uint32_t>(final_bytes[idx2]) << 16;
+    for (size_t i = 0; i < remainder_mod4; ++i) {
+      packet4 += static_cast<uint32_t>(
+                     static_cast<unsigned char>(final_bytes[i]))
+                 << (i * 8);
+    }
   }
   packet4 = host_from_le32(packet4);
 
