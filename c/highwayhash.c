@@ -79,8 +79,8 @@ static void Rotate32By(uint64_t count, uint64_t lanes[4]) {
   for (i = 0; i < 4; ++i) {
     uint32_t half0 = lanes[i] & 0xffffffff;
     uint32_t half1 = (lanes[i] >> 32);
-    lanes[i] = (half0 << count) | (half0 >> (32 - count));
-    lanes[i] |= (uint64_t)((half1 << count) | (half1 >> (32 - count))) << 32;
+    lanes[i] = (half0 << count) | (half0 >> ((32 - count) & 31));
+    lanes[i] |= (uint64_t)((half1 << count) | (half1 >> ((32 - count) & 31))) << 32;
   }
 }
 
